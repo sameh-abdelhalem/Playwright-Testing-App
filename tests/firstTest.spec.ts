@@ -65,3 +65,10 @@ test("locating Parent elements", async ({ page }) => {
     .getByRole("textbox", { name: "Email" })
     .click();
 });
+
+test("Reusing the locator", async ({ page }) => {
+  const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
+  await basicForm.getByRole("textbox", { name: "Email" }).fill("test@test.com");
+  await basicForm.getByRole("textbox", { name: "Password" }).fill("welcome123");
+  await basicForm.getByRole("button").click();
+});
