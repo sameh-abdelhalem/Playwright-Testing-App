@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
@@ -68,7 +68,33 @@ test("locating Parent elements", async ({ page }) => {
 
 test("Reusing the locator", async ({ page }) => {
   const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
-  await basicForm.getByRole("textbox", { name: "Email" }).fill("test@test.com");
-  await basicForm.getByRole("textbox", { name: "Password" }).fill("welcome123");
+  const emailField = basicForm.getByRole("textbox", { name: "Email" });
+  const passwordField = basicForm.getByRole("textbox", { name: "Password" });
+  await emailField.fill("test@test.com");
+  await passwordField.fill("welcome123");
   await basicForm.getByRole("button").click();
+  await expect(emailField).toHaveValue("test@test.com");
+  await expect(passwordField).toHaveValue("welcome123");
+});
+
+test("extracting values", async ({ page }) => {
+  const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
+  const buttonText = await basicForm.locator("button").textContent();
+  console.log(buttonText);
+  expect(buttonText).toBe("Submit");
+
+  //all text values
+
+  const allRadioButtonLabels = await page.locator("nb-radio").allTextContents();
+  expect(allRadioButtonLabels).toContain("Option 1");
+  console.log(allRadioButtonLabels);
+
+  // input value
+  const emailField = basicForm.getByRole("textbox", { name: "Email" });
+  await emailField.fill("test@test.com");
+  const emailValue = await emailField.inputValue();
+  expect(emailValue).toEqual("test@test.com");
+
+  const placeholderValue = await emailField.getAttribute("placeholder");
+  expect(placeholderValue).toEqual("Email");
 });
