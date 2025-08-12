@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { Value } from "sass";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
@@ -97,4 +98,24 @@ test("extracting values", async ({ page }) => {
 
   const placeholderValue = await emailField.getAttribute("placeholder");
   expect(placeholderValue).toEqual("Email");
+});
+
+test("assertions", async ({ page }) => {
+  //general assertions
+  const basicFormButton = page
+    .locator("nb-card")
+    .filter({ hasText: "Basic form" })
+    .locator("button");
+  const value = 5;
+  expect(value).toEqual(5);
+
+  const text = await basicFormButton.textContent();
+  expect(text).toEqual("Submit");
+
+  //Locator assertion
+  await expect(basicFormButton).toHaveText("Submit");
+
+  // Soft Assertion
+
+  await basicFormButton.click();
 });
