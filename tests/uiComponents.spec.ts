@@ -84,4 +84,71 @@ test.describe("Checkboxes", () => {
       expect(await box.isChecked()).toBeFalsy();
     }
   });
+
+  // lists
+
+  test("lists", async ({ page }) => {
+    const dropDownMenu = page.locator("ngx-header nb-select");
+
+    await dropDownMenu.click();
+    // const optionList = page.getByRole("list").locator("nb-option");
+
+    const optionList = page.locator("nb-option-list nb-option");
+    await expect(optionList).toHaveText([
+      "Light",
+      "Dark",
+      "Cosmic",
+      "Corporate",
+    ]);
+
+    await optionList.filter({ hasText: "Cosmic" }).click();
+    const header = page.locator("nb-layout-header");
+    expect(header).toHaveCSS("background-color", "rgb(50, 50, 89)");
+
+    const colors = {
+      Light: "rgb(255, 255, 255)",
+      Dark: "rgb(34, 43, 69)",
+      Cosmic: "rgb(50, 50, 89)",
+      Corporate: "rgb(255, 255, 255)",
+    };
+
+    for (const color in colors) {
+      await dropDownMenu.click();
+      await optionList.filter({ hasText: color }).click();
+      expect(header).toHaveCSS("background-color", colors[color]);
+    }
+  });
+});
+
+test("tooltips", async ({ page }) => {
+  await page.getByText("Modal & Overlays").click();
+  await page.getByText("Tooltip").click();
+
+  const toolTopCard = page.locator("nb-card", {
+    hasText: "Tooltip Placements",
+  });
+  await toolTopCard.getByRole("button", { name: "Top" }).hover();
+  const tooltip = await page.locator("nb-tooltip").textContent();
+  expect(tooltip).toEqual("This is a tooltip");
+});
+
+test("dialog box", async ({ page }) => {
+  await page.getByText("Tables & Data").click();
+  await page.getByText("Smart Table").click();
+  page.on("dialog", (dialog) => {
+    expect(dialog.message()).toEqual("Are you sure you want to delete?");
+    dialog.accept();
+  });
+  const tableRow = page.locator("tr", { hasText: "mdo@gmail.com" });
+  await tableRow.locator(".nb-trash").click();
+
+  await expect(page.locator("tbody tr").first()).not.toHaveText(
+    "mdo@gmail.com"
+  );
+});
+
+test("table", async ({ page }) => {
+  await page.getByText("Tables & Data").click();
+  await page.getByText("Smart Table").click();
+  
 });
