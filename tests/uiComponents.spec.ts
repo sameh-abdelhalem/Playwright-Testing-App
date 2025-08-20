@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { log } from "console";
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
@@ -171,4 +172,28 @@ test("table", async ({ page }) => {
     .getByPlaceholder("E-mail")
     .fill("test@test.com");
   await page.locator(".nb-checkmark").click();
+  await expect(targetRowById.locator("td").nth(5)).toHaveText("test@test.com");
+
+  //test table filtering
+  const ages = ["20", "30", "40", "200"];
+  const searchField = page.getByRole("row").locator("input[placeholder='Age']");
+  for (let age of ages) {
+    await searchField.fill(age);
+    // wait for search to be done
+    await page.waitForTimeout(500);
+
+    const filteredRows = page.locator("tbody tr");
+    // loop threw rows and check age
+    for (let row of await filteredRows.all()) {
+      const cellValue = await row.locator("td").last().textContent();
+      if (age == "200") {
+        expect(cellValue).toEqual(" No data found ");
+      } else {
+        expect(cellValue).toEqual(age);
+      }
+    }
+  }
 });
+
+
+test("datepicker")
