@@ -195,5 +195,44 @@ test("table", async ({ page }) => {
   }
 });
 
+test("datepicker", async ({ page }) => {
+  await page.getByText("Forms").click();
+  await page.getByText("Datepicker").click();
 
-test("datepicker")
+  await page
+    .locator("nb-card", { hasText: "Common Datepicker" })
+    .getByPlaceholder("Form Picker")
+    .click();
+  // select the nb-card-body that has the attribute ng-reflect-ng-switch = date
+  const date = new Date();
+  date.setDate(date.getDate() + 14); // add 7 days to the current date
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("En-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("En-US", { month: "long" });
+  const expectedYear = date.getFullYear().toString();
+  const expectedDateAssertion = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const monthDaysLocator = await page.locator(
+    "[class='day-cell ng-star-inserted']"
+  );
+
+  let calendarMonthAndYear = await page
+    .locator("nb-calendar-view-mode")
+    .textContent();
+  const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear} `;
+  while (!calendarMonthAndYear.includes(expectedMonthAndYear)) {
+    await page.locator(".next-month").click();
+    calendarMonthAndYear = await page
+      .locator("nb-calendar-view-mode")
+      .textContent();
+    await page.waitForTimeout(500); // wait for the calendar to update
+  }
+  await page
+    .locator("[class='day-cell ng-star-inserted']")
+    .getByText(expectedDate, { exact: true })
+    .click();
+  await expect(
+    page
+      .locator("nb-card", { hasText: "Common Datepicker" })
+      .getByRole("textbox")
+  ).toHaveValue(expectedDateAssertion);
+});
