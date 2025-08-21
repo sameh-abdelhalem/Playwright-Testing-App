@@ -205,7 +205,7 @@ test("datepicker", async ({ page }) => {
     .click();
   // select the nb-card-body that has the attribute ng-reflect-ng-switch = date
   const date = new Date();
-  date.setDate(date.getDate() + 14); // add 7 days to the current date
+  date.setDate(date.getDate() + 50); // add 7 days to the current date
   const expectedDate = date.getDate().toString();
   const expectedMonthShort = date.toLocaleString("En-US", { month: "short" });
   const expectedMonthLong = date.toLocaleString("En-US", { month: "long" });
@@ -235,4 +235,16 @@ test("datepicker", async ({ page }) => {
       .locator("nb-card", { hasText: "Common Datepicker" })
       .getByRole("textbox")
   ).toHaveValue(expectedDateAssertion);
+});
+
+test("sliders", async ({ page }) => {
+  const tempCircleLocator = page
+    .locator("ngx-temperature-dragger", { hasText: "Celsius" })
+    .locator("circle");
+
+  await tempCircleLocator.evaluate((node) => {
+    node.setAttribute("cx", "232.63098833543773");
+    node.setAttribute("cy", "232.63098833543773");
+  });
+  await tempCircleLocator.click();
 });
