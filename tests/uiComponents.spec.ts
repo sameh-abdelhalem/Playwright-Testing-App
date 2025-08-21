@@ -238,13 +238,31 @@ test("datepicker", async ({ page }) => {
 });
 
 test("sliders", async ({ page }) => {
-  const tempCircleLocator = page
-    .locator("ngx-temperature-dragger", { hasText: "Celsius" })
-    .locator("circle");
+  // const tempCircleLocator = page
+  //   .locator("ngx-temperature-dragger", { hasText: "Celsius" })
+  //   .locator("circle");
 
-  await tempCircleLocator.evaluate((node) => {
-    node.setAttribute("cx", "232.63098833543773");
-    node.setAttribute("cy", "232.63098833543773");
+  // await tempCircleLocator.evaluate((node) => {
+  //   node.setAttribute("cx", "232.63098833543773");
+  //   node.setAttribute("cy", "232.63098833543773");
+  // });
+  // await tempCircleLocator.click();
+
+  //Mouse movements
+  const tempBox = page.locator("ngx-temperature-dragger", {
+    hasText: "Celsius",
   });
-  await tempCircleLocator.click();
+  await tempBox.scrollIntoViewIfNeeded();
+
+  const box = await tempBox.boundingBox();
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+
+  await page.mouse.move(x, y);
+  await page.mouse.down();
+  await page.mouse.move(x + 100, y);
+  await page.mouse.move(x + 100, y + 100);
+  await page.mouse.up();
+
+  await expect(tempBox).toContainText("30");
 });
