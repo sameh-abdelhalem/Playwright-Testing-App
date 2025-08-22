@@ -15,7 +15,6 @@ export class NavigationPage {
   }
   async datePickerPage() {
     await this.selectGroupMenuItem("Forms");
-    await this.page.waitForTimeout(1000);
     await this.page.getByText("Datepicker").click();
   }
   async smartTablePage() {
