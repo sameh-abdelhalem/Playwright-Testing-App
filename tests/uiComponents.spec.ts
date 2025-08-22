@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { log } from "console";
+import { NavigationPage } from "../page-objects/navigationPage";
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
@@ -65,8 +66,8 @@ test.describe("Form Layouts page", () => {
 
 test.describe("Checkboxes", () => {
   test.beforeEach(async ({ page }) => {
-    await page.getByText("Modal & Overlays").click();
-    await page.getByText("Toastr").click();
+    const navigateTo = new NavigationPage(page);
+    await navigateTo.toastrPage();
   });
 
   test("checkboxes", async ({ page }) => {
@@ -122,8 +123,8 @@ test.describe("Checkboxes", () => {
 });
 
 test("tooltips", async ({ page }) => {
-  await page.getByText("Modal & Overlays").click();
-  await page.getByText("Tooltip").click();
+  const navigateTo = new NavigationPage(page);
+  await navigateTo.tooltipPage();
 
   const toolTopCard = page.locator("nb-card", {
     hasText: "Tooltip Placements",
@@ -149,8 +150,8 @@ test("dialog box", async ({ page }) => {
 });
 
 test("table", async ({ page }) => {
-  await page.getByText("Tables & Data").click();
-  await page.getByText("Smart Table").click();
+  const navigateTo = new NavigationPage(page);
+  await navigateTo.smartTablePage();
 
   const tableRow = page.getByRole("row", { name: "twitter@outlook.com" });
   await tableRow.locator(".nb-edit").click();
@@ -196,8 +197,8 @@ test("table", async ({ page }) => {
 });
 
 test("datepicker", async ({ page }) => {
-  await page.getByText("Forms").click();
-  await page.getByText("Datepicker").click();
+  const navigateTo = new NavigationPage(page);
+  await navigateTo.datePickerPage();
 
   await page
     .locator("nb-card", { hasText: "Common Datepicker" })
