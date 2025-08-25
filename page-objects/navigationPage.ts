@@ -1,12 +1,13 @@
 import { Page } from "@playwright/test";
-export class NavigationPage {
-  readonly page: Page;
+import { HelperBase } from "./helperBase";
+export class NavigationPage extends HelperBase {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
   async formLayoutsPage() {
     await this.selectGroupMenuItem("Forms");
     await this.page.getByText("Form Layouts").click();
+    await this.waitForNumberOfSeconds(1);
   }
   async toastrPage() {
     await this.selectGroupMenuItem("Modal & Overlays");
