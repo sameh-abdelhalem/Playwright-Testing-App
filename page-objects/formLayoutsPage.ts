@@ -29,7 +29,7 @@ export class FormLayoutsPage {
     await usingTheGridForm.getByRole("button", { name: "Sign In" }).click();
   }
   /**
-   *
+   * This function fills and submits the inline form
    * @param name first name and last name
    * @param email email address
    * @param RememberMeCheckbox true = check , false = uncheck

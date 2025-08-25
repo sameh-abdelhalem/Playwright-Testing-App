@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { NavigationPage } from "../page-objects/navigationPage";
 import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
+import { DatepickerPage } from "../page-objects/datepickerPage";
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
@@ -36,4 +37,18 @@ test("submit Inline form", async ({ page }) => {
     "jane.doe@example.com",
     true
   );
+});
+test("pick Date from today", async ({ page }) => {
+  const navigateTo = new NavigationPage(page);
+  await navigateTo.datePickerPage();
+
+  const datepickerPage = new DatepickerPage(page);
+  await datepickerPage.selectCommonDatePickerDateFromToday(5);
+});
+test("pick Date Range from today", async ({ page }) => {
+  const navigateTo = new NavigationPage(page);
+  await navigateTo.datePickerPage();
+
+  const datepickerPage = new DatepickerPage(page);
+  await datepickerPage.selectDateRangeFromXDaysFromToday(5, 10);
 });
