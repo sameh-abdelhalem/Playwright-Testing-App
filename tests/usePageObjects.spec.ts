@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
-import { DatepickerPage } from "../page-objects/datepickerPage";
 import { PageManager } from "../page-objects/pageManager";
+
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
@@ -30,12 +28,17 @@ test("submit form using the grid", async ({ page }) => {
 });
 
 test("submit Inline form", async ({ page }) => {
+  const { faker } = await import("@faker-js/faker");
+  const randomFullName = faker.person.fullName();
+  const randomEmail = `${randomFullName
+    .replace(/\s+/g, "")
+    .toLowerCase()}${faker.number.int(1000)}@test.com`;
   const pm = new PageManager(page);
   await pm.navigateTo().formLayoutsPage();
 
   await pm
     .onFormLayoutsPage()
-    .submitInlineForm("Jane Doe", "jane.doe@example.com", true);
+    .submitInlineForm(randomFullName, randomEmail, true);
 });
 test("pick Date from today", async ({ page }) => {
   const pm = new PageManager(page);
