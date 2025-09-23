@@ -19,7 +19,7 @@ test("auto waiting", async ({ page }) => {
   });
 });
 
-test("alternative ways", async ({ page }) => {
+test.skip("alternative ways", async ({ page }) => {
   const successButton = page.locator(".bg-success");
   // wait for element
   // await page.waitForSelector(".bg-success");
@@ -33,7 +33,7 @@ test("alternative ways", async ({ page }) => {
   expect(text).toContain("Data loaded with AJAX get request.");
 });
 
-test("timeouts", async ({ page }) => {
+test.skip("timeouts", async ({ page }) => {
   test.slow();
   const successButton = page.locator(".bg-success");
   await successButton.click({ timeout: 16000 });

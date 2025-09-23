@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
 
-test.describe.only("Form Layouts page", () => {
+test.describe.parallel("Form Layouts page", () => {
   test.describe.configure({ retries: 2 });
   test.beforeEach(async ({ page }) => {
     await page.getByText("Forms").click();
@@ -22,9 +22,7 @@ test.describe.only("Form Layouts page", () => {
     console.log(usingTheGridEmailInput);
     await usingTheGridEmailInput.fill("test@test.com");
     await usingTheGridEmailInput.clear();
-    await usingTheGridEmailInput.pressSequentially("test2@test.com", {
-      delay: 500,
-    });
+    await usingTheGridEmailInput.pressSequentially("test2@test.com");
 
     //generic assertion
 

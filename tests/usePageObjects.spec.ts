@@ -25,6 +25,9 @@ test("submit form using the grid", async ({ page }) => {
       "password",
       "Option 2"
     );
+
+  await page.screenshot({ path: "screenshots/formLayoutsPage.png" });
+  
 });
 
 test("submit Inline form", async ({ page }) => {
