@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { log } from "console";
 import { NavigationPage } from "../page-objects/navigationPage";
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
 test.describe.parallel("Form Layouts page", () => {

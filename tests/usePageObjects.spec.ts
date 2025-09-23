@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { PageManager } from "../page-objects/pageManager";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
 test("navigate to form page", async ({ page }) => {
@@ -27,7 +27,13 @@ test("submit form using the grid", async ({ page }) => {
     );
 
   await page.screenshot({ path: "screenshots/formLayoutsPage.png" });
-  
+  await page
+    .locator("nb-card", {
+      hasText: "Inline form",
+    })
+    .screenshot({ path: "screenshots/inlineForm.png" });
+  const buffer = await page.screenshot();
+  console.log(buffer.toString("base64"));
 });
 
 test("submit Inline form", async ({ page }) => {
