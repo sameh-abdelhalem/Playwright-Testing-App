@@ -21,8 +21,8 @@ test("submit form using the grid", async ({ page }) => {
   await pm
     .onFormLayoutsPage()
     .submitUsingTheGridFormWithCredentialsAndSelectOption(
-      "test@test.com",
-      "password",
+      process.env.USERNAME,
+      process.env.PASSWORD,
       "Option 2"
     );
 
