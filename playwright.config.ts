@@ -29,6 +29,13 @@ export default defineConfig<TestOptions>({
 
   projects: [
     {
+      name: "mobile",
+      testMatch: "testMobile.spec.ts",
+      use: {
+        ...devices["iPhone 13 Pro Max"],
+      },
+    },
+    {
       name: "chromium",
       timeout: 60 * 1000,
     },
