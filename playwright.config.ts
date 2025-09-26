@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import type { TestOptions } from "./test-options";
 
+// Load .env variables globally for all tests
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.resolve(__dirname, ".env") });
@@ -8,7 +9,7 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 export default defineConfig<TestOptions>({
   timeout: 40 * 1000,
   globalTimeout: 60 * 1000,
-  retries: 1,
+
   reporter: "html",
   use: {
     baseURL:
@@ -19,13 +20,14 @@ export default defineConfig<TestOptions>({
         : "http://localhost:4200/",
     globalsQaURL: "https://www.globalsqa.com/demo-site/draganddrop/",
     trace: "on-first-retry",
+    // Pass env variables to all tests
+    extraHTTPHeaders: {
+      "x-username": process.env.USERNAME || "",
+      "x-password": process.env.PASSWORD || "",
+    },
   },
 
   projects: [
-    {
-      name: "dev",
-      use: { ...devices["Desktop Chrome"], baseURL: "http://localhost:4200/" },
-    },
     {
       name: "chromium",
       timeout: 60 * 1000,

@@ -1,7 +1,9 @@
 import { test as base } from "@playwright/test";
+import { PageManager } from "./page-objects/pageManager";
 export type TestOptions = {
   globalsQaURL: string;
   formLayoutsPage: string;
+  pageManager: PageManager;
 };
 export const test = base.extend<TestOptions>({
   globalsQaURL: ["", { option: true }],
@@ -11,7 +13,12 @@ export const test = base.extend<TestOptions>({
       await page.getByText("Forms").click();
       await page.getByText("Form Layouts").click();
       await use("");
+      console.log("teardown formLayoutsPage");
     },
     { auto: true },
   ],
+  pageManager: async ({ page }, use) => {
+    const pm = new PageManager(page);
+    await use(pm);
+  },
 });

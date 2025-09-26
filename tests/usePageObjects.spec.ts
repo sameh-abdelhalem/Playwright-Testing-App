@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("navigate to form page", async ({ page }) => {
+test("navigate to form page @smoke", async ({ page }) => {
   const pm = new PageManager(page);
   await pm.navigateTo().formLayoutsPage();
   await pm.navigateTo().datePickerPage();
@@ -14,7 +14,7 @@ test("navigate to form page", async ({ page }) => {
   await pm.navigateTo().tooltipPage();
 });
 
-test("submit form using the grid", async ({ page }) => {
+test("submit form using the grid @smoke", async ({ page }) => {
   const pm = new PageManager(page);
   await pm.navigateTo().formLayoutsPage();
 
