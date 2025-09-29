@@ -12,6 +12,16 @@ export default defineConfig<TestOptions>({
     ["json", { outputFile: "test-results/test-results.json" }],
     ["junit", { outputFile: "test-results/test-results.xml" }],
     ["html"],
+    // Use "dot" reporter on CI, "list" otherwise (Playwright default).
+    process.env.CI ? ["dot"] : ["list"],
+    // Add Argos reporter.
+    [
+      "@argos-ci/playwright/reporter",
+      {
+        // Upload to Argos on CI only.
+        uploadToArgos: !!process.env.CI,
+      },
+    ],
   ],
   use: {
     baseURL:
@@ -22,6 +32,7 @@ export default defineConfig<TestOptions>({
         : "http://localhost:4200/",
     globalsQaURL: "https://www.globalsqa.com/demo-site/draganddrop/",
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
     // Pass env variables to all tests
     extraHTTPHeaders: {
       "x-username": process.env.USERNAME || "",
