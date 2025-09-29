@@ -13,6 +13,11 @@ test("navigate to form page @smoke @regression", async ({ page }) => {
   await pm.navigateTo().toastrPage();
   await pm.navigateTo().tooltipPage();
 });
+test.only("testing with argoc ci", async ({ page }) => {
+  const pm = new PageManager(page);
+  await pm.navigateTo().formLayoutsPage();
+  await pm.navigateTo().datePickerPage();
+});
 
 test("submit form using the grid @smoke", async ({ page }) => {
   const pm = new PageManager(page);
