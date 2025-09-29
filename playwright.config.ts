@@ -43,6 +43,7 @@ export default defineConfig<TestOptions>({
   projects: [
     {
       name: "chromium",
+      use: { browserName: "chromium" },
     },
     {
       name: "mobile",
@@ -60,7 +61,7 @@ export default defineConfig<TestOptions>({
       name: "pageObjectFullScreen",
       testMatch: "usePageObjects.spec.ts",
       use: {
-        browserName: "chromium", // 👈 makes it clear
+        browserName: "chromium",
         video: { mode: "on", size: { width: 1920, height: 1080 } },
       },
     },
