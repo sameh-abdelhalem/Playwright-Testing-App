@@ -8,9 +8,11 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 export default defineConfig<TestOptions>({
   timeout: 40 * 1000,
-  globalTimeout: 60 * 1000,
-
-  reporter: "html",
+  reporter: [
+    ["json", { outputFile: "test-results/test-results.json" }],
+    ["junit", { outputFile: "test-results/test-results.xml" }],
+    ["html"],
+  ],
   use: {
     baseURL:
       process.env.DEV === "1"
@@ -29,15 +31,14 @@ export default defineConfig<TestOptions>({
 
   projects: [
     {
+      name: "chromium",
+    },
+    {
       name: "mobile",
       testMatch: "testMobile.spec.ts",
       use: {
         ...devices["iPhone 13 Pro Max"],
       },
-    },
-    {
-      name: "chromium",
-      timeout: 60 * 1000,
     },
 
     {
@@ -52,4 +53,9 @@ export default defineConfig<TestOptions>({
       },
     },
   ],
+
+  webServer: {
+    command: "npm run start",
+    url: "http://localhost:4200",
+  },
 });
