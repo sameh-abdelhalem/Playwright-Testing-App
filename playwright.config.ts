@@ -49,6 +49,7 @@ export default defineConfig<TestOptions>({
       name: "pageObjectFullScreen",
       testMatch: "usePageObjects.spec.ts",
       use: {
+        browserName: "chromium", // 👈 makes it clear
         video: { mode: "on", size: { width: 1920, height: 1080 } },
       },
     },
@@ -57,5 +58,6 @@ export default defineConfig<TestOptions>({
   webServer: {
     command: "npm run start",
     url: "http://localhost:4200",
+    reuseExistingServer: true,
   },
 });
